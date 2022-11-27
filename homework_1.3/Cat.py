@@ -4,7 +4,7 @@ from Animal import Animal
 
 
 class Cat(Animal):
-    def __int__(self, position: Position2D, hunger_perc : float, items_destroyed: list[Item]):
+    def __int__(self, position: Position2D, hunger_perc: float, items_destroyed: list[Item]):
         self.items_destroyed = items_destroyed
         super(Cat, self).__int__(position, hunger_perc)
 
@@ -15,5 +15,5 @@ class Cat(Animal):
     def meow(self) -> None:
         print("Dog meow")
 
-    def destroy_item(self, item):
+    def destroy_item(self, item: Item):
         self.items_destroyed.remove(item)
