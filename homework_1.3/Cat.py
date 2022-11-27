@@ -9,7 +9,7 @@ class Cat(Animal):
         super(Cat, self).__int__(position, hunger_perc)
 
     def move(self):
-        hunger_p = super(Cat, self).get_hunger_perc() + super(Cat, self).get_hunger_perc() * 11 / 100
+        hunger_p = super(Cat, self).get_hunger_perc() * 111 / 100
         super(Cat, self).set_hunger_perc(hunger_p)
 
     def meow(self) -> None:

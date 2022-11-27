@@ -8,7 +8,7 @@ class Dog(Animal):
         super(Dog, self).__int__(position, hunger_perc)
 
     def move(self) -> None:
-        hunger_p = super(Dog, self).get_hunger_perc() + super(Dog, self).get_hunger_perc() * 10 / 100
+        hunger_p = super(Dog, self).get_hunger_perc() * 110 / 100
         super(Dog, self).set_hunger_perc(hunger_p)
 
     def bark(self) -> None:

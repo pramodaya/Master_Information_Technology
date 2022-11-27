@@ -9,7 +9,6 @@ class Robot(MovableObject):
 
     def charge(self, hours: float):
         self.battery_perc = self.battery_perc + (self.battery_perc * 10 / 100) * hours
-        return self.battery_perc
 
     def move(self) -> None:
         self.battery_perc = self.battery_perc * 90 / 100
