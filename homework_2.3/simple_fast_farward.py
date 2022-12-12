@@ -1,20 +1,25 @@
 import numpy as np
 
 X_raw = np.array([
-    [2010, 380_000],
-    [2009, 419_000],
-    [2011, 251_700],
-    [2010, 633_500],
-    [2002, 611_000]
+    [2003, 680_000],
+    [2007, 519_000],
+    [2010, 471_300],
+    [2009, 633_000],
+    [2014, 311_000]
 ], dtype=np.float)
 
 Y_raw = np.array([
-    [22_500],
-    [17_500],
-    [28_000],
-    [16_000],
-    [5_600]
+    [12_500],
+    [13_500],
+    [19_000],
+    [18_000],
+    [20_600]
 ], dtype=np.float)
+
+print(X_raw[2])
+print(X_raw[:, 1])
+print(X_raw[0:5, 1])
+print(X_raw[3, 0])
 
 X = (X_raw - np.mean(X_raw, axis=0)) / np.std(X_raw, axis=0)
 Y_mean = np.mean(Y_raw, axis=0)
@@ -23,9 +28,8 @@ Y = (Y_raw - Y_mean) / Y_std
 
 w_1 = np.random.rand(2, 3)
 b_1 = np.zeros(3)
-w_2 = np.random.rand(3, 1)
+w_2 = np.random.rand(3, 2)
 b_2 = np.zeros(1)
-
 
 def linear(w, b, x):
     out_1 = w.transpose() @ x[:, :, np.newaxis]
@@ -59,6 +63,7 @@ def model(X, w_1, b_1, w_2, b_2):
     return out_3
 
 
+
 def loss_mae(y_prim, y):
     return np.sum(np.abs(y_prim - y))
 
@@ -71,7 +76,43 @@ def dw1_loss(X, w_1, b_1, w_2, b_2):
     y_prim = model(X, w_1, b_1, w_2, b_2)
 
 
-Y_prim = model(X, w_1, b_1, w_2, b_2)
+
+
+# New Data with 3 variables
+
+
+def model_threee_param(X, w_1, b_1, w_2, b_2, w_3, b_3):
+    out_1 = linear(w_1, b_1, X)
+    out_2 = sigmoid(out_1)
+    out_3 = linear(w_2, b_2, out_2)
+    out_4 = sigmoid(w_3, b_3, out_3)
+    out_5 = linear(w_3, b_3, out_4)
+    return out_5
+
+def dw1_loss_three_param(X, w_1, b_1, w_2, b_2, w_3, b_3):
+    y_prim = model_threee_param(X, w_1, b_1, w_2, b_2, w_3, b_3)
+
+
+X_raw = np.array([
+    [2003, 680_000, 4],
+    [2007, 519_000, 4],
+    [2010, 471_300, 4],
+    [2009, 633_000, 2],
+    [2014, 311_000, 4]
+], dtype=np.float)
+
+Y_raw = np.array([
+    [12_500],
+    [13_500],
+    [19_000],
+    [18_000],
+    [20_600]
+], dtype=np.float)
+
+w_3 = np.random.rand(3, 1)
+b_3 = np.zeros(1)
+
+Y_prim = model_threee_param(X, w_1, b_1, w_2, b_2, w_3, b_3)
 loss = loss_mae(Y_prim, Y)
 
 print(f'Y_prim : {Y_prim}')
