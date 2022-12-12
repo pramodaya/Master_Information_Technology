@@ -93,7 +93,7 @@ def dw1_loss_three_param(X, w_1, b_1, w_2, b_2, w_3, b_3):
     y_prim = model_threee_param(X, w_1, b_1, w_2, b_2, w_3, b_3)
 
 
-X_raw = np.array([
+X_raw_three_param = np.array([
     [2003, 680_000, 4],
     [2007, 519_000, 4],
     [2010, 471_300, 4],
@@ -101,7 +101,7 @@ X_raw = np.array([
     [2014, 311_000, 4]
 ], dtype=np.float)
 
-Y_raw = np.array([
+Y_raw_three_param = np.array([
     [12_500],
     [13_500],
     [19_000],
@@ -112,8 +112,8 @@ Y_raw = np.array([
 w_3 = np.random.rand(3, 1)
 b_3 = np.zeros(1)
 
-Y_prim = model_threee_param(X, w_1, b_1, w_2, b_2, w_3, b_3)
-loss = loss_mae(Y_prim, Y)
+Y_prim_three_param = model_threee_param(X_raw_three_param, w_1, b_1, w_2, b_2, w_3, b_3)
+loss_three_param = loss_mae(Y_prim_three_param, Y_raw_three_param)
 
-print(f'Y_prim : {Y_prim}')
-print(f'Y : {Y}')
+print(f'Y_prim : {Y_prim_three_param}')
+print(f'Y : {Y_prim_three_param}')
