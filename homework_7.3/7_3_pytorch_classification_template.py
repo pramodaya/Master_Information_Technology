@@ -99,11 +99,14 @@ class Model(torch.nn.Module):
         super().__init__()
 
         self.layers = torch.nn.Sequential(
-            # TODO last output must be 1 scalar probaility of car being automatic
             torch.nn.Linear(in_features=4, out_features=1)
         )
 
-        self.embs = torch.nn.ModuleList()
+        self.embs = torch.nn.ModuleList([
+            torch.nn.Embedding(num_embeddings=2, embedding_dim=2),
+            torch.nn.Embedding(num_embeddings=4, embedding_dim=2),
+            torch.nn.Embedding(num_embeddings=4, embedding_dim=2)
+        ])
         for i in range(1):
             self.embs.append(
                 torch.nn.Embedding(embedding_dim=4,
@@ -111,12 +114,9 @@ class Model(torch.nn.Module):
             )
 
     def forward(self, x, x_classes):
-        x_side = [emb.forward(col) for emb, col in zip(self.embs, x_classes.T)]
-        x_sides = torch.cat(x_side, dim=-1)
-        x = torch.cat([x, x_sides], dim=-1)
-        y_prim = self.layers.forward(x)
-        return y_prim
-
+        x = torch.cat([x, self.embs[0](x_classes[:, 0]), self.embs[1](x_classes[:, 1]), self.embs[2](x_classes[:, 2])], dim=-1)
+        x = self.layers(x)
+        return x
 
 class LossBCE(torch.nn.Module):
     def __init__(self):
