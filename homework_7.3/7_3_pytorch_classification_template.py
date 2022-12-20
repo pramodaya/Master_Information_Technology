@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import torch.utils.data
 import torch.nn.functional as F
 
-plt.rcParams["figure.figsize"] = (10, 7) # size of window
+plt.rcParams["figure.figsize"] = (10, 7)  # size of window
 plt.style.use('dark_background')
 
 LEARNING_RATE = 1e-3
@@ -53,7 +53,7 @@ class Dataset(torch.utils.data.Dataset):
         self.X = np.concatenate((np.array(self.X), np.array(X_price)[:, np.newaxis]), axis=1)
         self.X_c = np.concatenate((self.X[:, :2], self.X[:, 3:4]), axis=1)
 
-        self.Y = self.X[:, 2] # y_transmission, [Automatic, Manual]
+        self.Y = self.X[:, 2]  # y_transmission, [Automatic, Manual]
         self.Y_labels = self.labels[2]
         self.Y_len = len(self.Y_labels)
         self.labels.pop(1)
@@ -68,10 +68,11 @@ class Dataset(torch.utils.data.Dataset):
 
     def __getitem__(self, idx):
         return (
-            torch.FloatTensor(self.X[idx]), # x_year, x_km_driven, x_owner, x_price
-            torch.LongTensor(self.X_c[idx]), # x_brands, x_fuel, x_seller_type
-            torch.LongTensor(np.expand_dims(self.Y[idx], axis=-1)) # y_transmission, [Automatic, Manual]
+            torch.FloatTensor(self.X[idx]),  # x_year, x_km_driven, x_owner, x_price
+            torch.LongTensor(self.X_c[idx]),  # x_brands, x_fuel, x_seller_type
+            torch.LongTensor(np.expand_dims(self.Y[idx], axis=-1))  # y_transmission, [Automatic, Manual]
         )
+
 
 dataset_full = Dataset()
 train_test_split = int(len(dataset_full) * TRAIN_TEST_SPLIT)
@@ -114,9 +115,11 @@ class Model(torch.nn.Module):
             )
 
     def forward(self, x, x_classes):
-        x = torch.cat([x, self.embs[0](x_classes[:, 0]), self.embs[1](x_classes[:, 1]), self.embs[2](x_classes[:, 2])], dim=-1)
+        x = torch.cat([x, self.embs[0](x_classes[:, 0]), self.embs[1](x_classes[:, 1]), self.embs[2](x_classes[:, 2])],
+                      dim=-1)
         x = self.layers(x)
         return x
+
 
 class LossBCE(torch.nn.Module):
     def __init__(self):
@@ -124,6 +127,7 @@ class LossBCE(torch.nn.Module):
 
     def forward(self, y_prim, y):
         return -torch.mean(y * torch.log(y_prim) + (1 - y) * torch.log(1 - y_prim))
+
 
 model = Model()
 optimizer = torch.optim.Adam(
@@ -230,7 +234,7 @@ for epoch in range(1, 1000):
         for x in range(dataset_full.Y_len):
             for y in range(dataset_full.Y_len):
                 ax1.annotate(
-                    str(conf_matrix_train[x,y]),
+                    str(conf_matrix_train[x, y]),
                     xy=(y, x),
                     horizontalalignment='center',
                     verticalalignment='center',
@@ -250,7 +254,7 @@ for epoch in range(1, 1000):
         for x in range(dataset_full.Y_len):
             for y in range(dataset_full.Y_len):
                 ax1.annotate(
-                    str(conf_matrix_test[x,y]),
+                    str(conf_matrix_test[x, y]),
                     xy=(y, x),
                     horizontalalignment='center',
                     verticalalignment='center',
